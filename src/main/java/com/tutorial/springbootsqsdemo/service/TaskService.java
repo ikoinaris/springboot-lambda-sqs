@@ -8,12 +8,16 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
 @Service
-@AllArgsConstructor
 public class TaskService {
 
     private final SqsClient sqsClient;
-    @Value("${aws.sqs.queue-url}")
     private final String queueUrl;
+
+    public TaskService(SqsClient sqsClient, @Value("${aws.sqs.queue-url}") String queueUrl) {
+        this.sqsClient = sqsClient;
+        this.queueUrl = queueUrl;
+    }
+
 
     public void submitTask(Task task) {
         SendMessageRequest request =
